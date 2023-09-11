@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomeCreateRequest;
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,9 @@ class CustomerController extends Controller
      */
     public function store(CustomeCreateRequest $request)
     {
-        Customer::create($request->all());
-        return response()->json(['message' => 'Customer created successfully'/*, 'customer' => $customer*/], 201);
+        $customer = Customer::create($request->all());
+        return response()->json(['message' => 'Customer created successfully',
+                                'customer' => new CustomerResource($customer)], 201);
     }
 
     /**
