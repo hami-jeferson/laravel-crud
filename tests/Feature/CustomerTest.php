@@ -38,6 +38,7 @@ class CustomerTest extends TestCase
         $response = $this->post('/api/customer', $customerData, ['accept' => 'application/json']);
 
         $response->assertStatus(201)
+            ->assertJson(['success' => true])
             ->assertJson(['message' => 'Customer created successfully']);
 
         $this->assertDatabaseCount('customers', 1);
@@ -52,7 +53,8 @@ class CustomerTest extends TestCase
         $response = $this->get("/api/customer/{$customer->id}");
 
         $response->assertStatus(200)
-            ->assertJsonStructure(['customer']);
+                 ->assertJson(['success' => true])
+                 ->assertJsonStructure(['customer']);
     }
 
     /** @test */
@@ -64,7 +66,8 @@ class CustomerTest extends TestCase
         $response = $this->put("/api/customer/{$customer->id}", $updatedData, ['accept' => 'application/json']);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Customer updated successfully']);
+                 ->assertJson(['success' => true])
+                 ->assertJson(['message' => 'Customer updated successfully']);
 
         $this->assertDatabaseHas('customers', ['id' => $customer->id, 'email' => $updatedData['email']]);
     }
@@ -77,7 +80,8 @@ class CustomerTest extends TestCase
         $response = $this->delete("/api/customer/{$customer->id}", [], ['accept' => 'application/json']);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Customer deleted successfully']);
+                 ->assertJson(['success' => true])
+                 ->assertJson(['message' => 'Customer deleted successfully']);
 
         $this->assertDatabaseMissing('customers', ['id' => $customer->id]);
     }
