@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomeCreateRequest;
+use App\Http\Requests\CustomeUpdateRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -42,9 +43,14 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CustomeUpdateRequest $request, string $id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        $customer->fill($request->all());
+        $customer->save();
+
+        return response()->json(['message' => 'Customer Updated',
+                                 'customer' => new CustomerResource($customer)], 200);
     }
 
     /**
