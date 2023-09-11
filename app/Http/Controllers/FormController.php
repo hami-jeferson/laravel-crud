@@ -11,26 +11,22 @@ class FormController extends Controller
 
     public function create()
     {
-        return view('');
-    }
-
-    public function store()
-    {
-
+        return view('form.create');
     }
 
     public function update($id)
     {
+        $getDetails = $this->fetch(route('customer.show', $id));
+        $customer = isset($getDetails['customer'])?$getDetails['customer']:[];
 
-    }
-
-    public function edit()
-    {
+        return view('form.edit', compact('customer'));
 
     }
 
     public function destroy($id)
     {
-        $this->fetch();
+        $delete = $this->fetch(route('customer.destroy', $id),'DELETE');
+        return redirect()->back();
     }
+
 }

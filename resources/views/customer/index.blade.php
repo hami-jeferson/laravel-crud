@@ -2,6 +2,8 @@
 @section('content')
     <div class="row">
         <a href="{{route('customer-create')}}" class="btn btn-primary col-md-2">Add</a>
+
+        @include('partials.form-error')
         <table class="table">
             <thead>
                 <tr>
@@ -27,7 +29,11 @@
                         <td>IR{{$customer['bank_account_number']}}</td>
                         <td>
                             <a href="{{route('customer-update', $customer['id'])}}">Edit</a> &nbsp;
-                            <a href="{{route('customer-destroy', $customer['id'])}}">Delete</a>
+                            <form action="{{route('customer-destroy', $customer['id'])}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <a href="javascript:void(0)" onclick="$(this).parent().submit()" type="submit">Delete</a>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
