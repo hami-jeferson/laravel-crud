@@ -14,7 +14,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+        return response()->json(['message' => 'Customer list',
+                                 'customer' => CustomerResource::collection($customers)], 200);
     }
 
     /**
@@ -32,7 +34,9 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        return response()->json(['message' => 'Customer',
+                                 'customer' => new CustomerResource($customer)], 200);
     }
 
     /**
@@ -48,6 +52,7 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Customer::destroy($id);
+        return response()->json(['message' => 'Customer deleted successfully'], 200);
     }
 }
