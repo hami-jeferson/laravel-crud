@@ -18,13 +18,18 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
+        $accountNo = '';
+        for ($i = 0; $i < 3; $i++) {
+            $segment = str_pad($this->faker->numberBetween(1, 999999999), 9, '0', STR_PAD_LEFT);
+            $accountNo .= $segment;
+        }
         return [
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
             'date_of_birth' => $this->faker->date,
-            'phone_number' => $this->faker->phoneNumber,
+            'phone_number' => '0913' . $this->faker->unique()->numberBetween(1000000, 9999999),
             'email' => $this->faker->unique()->safeEmail,
-            'bank_account_number' => $this->faker->bankAccountNumber,
+            'bank_account_number' => $accountNo,
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -24,29 +24,23 @@ class CustomeUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = Route::current()->parameter('customer');
         return [
-            'firstname'=>'required|max:255',
-            'lastname'=>'required|max:255',
+            'firstname' => 'sometimes|max:255',
+            'lastname' => 'sometimes|max:255',
             'date_of_birth' => [
-                'required',
+                'sometimes',
                 'date',
-                Rule::unique('customers')->where(function ($query) use($id) {
-                    return $query
-                        ->where('firstname', $this->input('firstname'))
-                        ->where('lastname', $this->input('lastname'))
-                        ->where('id', '<>', $id);
-                }),
+                Rule::unique('customers')
+                    ->where(function ($query) {
+                        return $query
+                            ->where('firstname', $this->input('firstname'))
+                            ->where('lastname', $this->input('lastname'));
+                    })
+                    ->ignore($this->route('customer')),
             ],
-            'phone_number'=>['required', new MobilePhoneRule],
-            'email'=>'required|email|unique:customers,email,'.$id,
-            'bank_account_number'=>'required'
-//            'bank_account_number'=>[
-//                'required',
-//                new IntegerStringRule,
-//                'max_digits:24',
-//                'min_digits:24'
-//            ]
+            'phone_number' => ['sometimes', new MobilePhoneRule],
+            'email' => 'sometimes|email|unique:customers,email,' . $this->route('customer'),
+            'bank_account_number' => 'sometimes',
         ];
     }
 }

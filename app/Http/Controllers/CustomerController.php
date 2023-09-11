@@ -49,7 +49,7 @@ class CustomerController extends Controller
         $customer->fill($request->all());
         $customer->save();
 
-        return response()->json(['message' => 'Customer Updated',
+        return response()->json(['message' => 'Customer updated successfully',
                                  'customer' => new CustomerResource($customer)], 200);
     }
 
